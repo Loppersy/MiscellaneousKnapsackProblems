@@ -58,7 +58,9 @@ def unboundedhelper(i, j, profit, weight, knapsack_arr):
     return profit[i - 1] + knapsack_arr[i][j - weight[i - 1]]
 
 
-""" Result matrix traceback to determine items and quantities (multiples) of those items that compose the 
+""" 
+
+Result matrix traceback to determine items and quantities (multiples) of those items that compose the 
 optimal solution. For a given square, if the i - 1 item for the same capacity has the same total
 profit as the ith item, the current item is not a part of the subset solution.  If the value between the 
 current cell and the i - 1 cell above it is different, this item is a part of the solution.  
@@ -93,7 +95,7 @@ def traceback(weight_profit, knapsack_arr):
     
     return count
 
-
+'================================MAIN============================='
 #temp hardcodes
 weight_profit = [(1, 2), (2, 5), (4, 8), (2, 3)]
 
@@ -101,7 +103,7 @@ capacity = 6
 
 ## BOUNDED test
 result2 = dynamicKS(weight_profit, capacity, boundedhelper)
-print(result2)
+print(np.matrix(result2))
 
 count2 = traceback(weight_profit, result2)
 for i in range(len(weight_profit)):
@@ -111,7 +113,7 @@ for i in range(len(weight_profit)):
 
 ## UNBOUNDED test
 result2 = dynamicKS(weight_profit, capacity, unboundedhelper)
-print(result2)
+print(np.matrix(result2))
 
 count2 = traceback(weight_profit, result2)
 for i in range(len(weight_profit)):
