@@ -1,17 +1,19 @@
 import numpy as np
 
 """ 
-Following function solves the unbounded knapsack problem using a bottom up dynanic
+Following function solves the unbounded and unbounded knapsack problem using a bottom up dynanic
 programming approach that incrementally solves horizontally for incremental capacity and vertically
 for additoinal item types.  Accepts a list of (weight, profit) tuples and a maximum capacity and 
 returns 2D knapsack solution matrix 
+
+Pass boundedhelper() to do the 01 knapsack problem, pass unboundedhelper do the general 
+knapsack problem
 """
-def unboundedKS(weight_profit, max_capacity):
+def dynamicKS(weight_profit, max_capacity, knapsackfunc):
     #Cannot have negative capacity
     if(max_capacity < 0):
         return None
 
-    print("in gunction")
     #unzip the (weight, profit tuples) for clarity
     weight, profit = zip(*weight_profit)
 
@@ -22,7 +24,7 @@ def unboundedKS(weight_profit, max_capacity):
 
     #for each (weight, profit) 
     for i in range(table_h): #i - 1 is the item index
-        print('i = ', i) #for each capacity [1...max capacity]
+        #for each capacity [1...max capacity]
         for j in range(table_w): #j is the capacity
             #basecase handling
             if (i == 0 or j == 0):
@@ -31,9 +33,9 @@ def unboundedKS(weight_profit, max_capacity):
                 if(weight[i - 1] <= j): #if some multiple of the current item weight "fits" in the current capacity
                     #the highest knapsack value for the current capacity as of the previous item
                     prev_high = knapsack_arr[i - 1][j] 
-                    #the value of the current item + the highest previous value that has enough remaining
-                    #capacity for the current item (value at capacity - current item weight)
-                    candidate = profit[i - 1] + knapsack_arr[i][j - weight[i - 1]]
+                    #the value of the knapsack at current capacity - current item's weight in the 
+                    #previous row
+                    candidate = knapsackfunc(i, j, profit, weight, knapsack_arr)
                     #whichever value is higher goes to the current cell in the matrix, representing the
                     #highest possible value for the knapsack for this subset of items at this capacity
                     if(candidate >= prev_high):
@@ -46,7 +48,25 @@ def unboundedKS(weight_profit, max_capacity):
 
     return knapsack_arr
 
-def unboundedtraceback(weight_profit, knapsack_arr):
+" Returns the total profit at the prior item's (current capacity - current item weight) "
+def boundedhelper(i, j, profit, weight, knapsack_arr):
+    return profit[i - 1] + knapsack_arr[i - 1][j - weight[i - 1]]
+
+
+" Returns the total profit at the current item's (current capacity - current item weight)"
+def unboundedhelper(i, j, profit, weight, knapsack_arr):
+    return profit[i - 1] + knapsack_arr[i][j - weight[i - 1]]
+
+
+""" Result matrix traceback to determine items and quantities (multiples) of those items that compose the 
+optimal solution. For a given square, if the i - 1 item for the same capacity has the same total
+profit as the ith item, the current item is not a part of the subset solution.  If the value between the 
+current cell and the i - 1 cell above it is different, this item is a part of the solution.  
+
+Works for unbounded or bounded matrices.
+
+"""
+def traceback(weight_profit, knapsack_arr):
     #unzip the (weight, profit tuples) for clarity
     weight, profit = zip(*weight_profit)
 
@@ -58,8 +78,8 @@ def unboundedtraceback(weight_profit, knapsack_arr):
     i = table_h - 1 #representative of the current item, starting from the end
     j = table_w - 1 #representative of the currend capacity, starting with the greatest
 
-    #as long as we are not on the basecase of 0 items or capacity 0, continue matrix traceback
-    while(knapsack_arr[i][j]): 
+    #as long as we are not on the 0th item (item non existant), trace the matrix
+    while((i >= 0)): 
         #if the current cell is the same as the one above it, the current item has not been
         #added to the knapsack for this total capacity, so change to the previous item
         if(knapsack_arr[i][j] == knapsack_arr[i - 1][j]):
@@ -75,15 +95,26 @@ def unboundedtraceback(weight_profit, knapsack_arr):
 
 
 #temp hardcodes
-weight_profit = [(1, 2), (2, 5), (4, 8)]
+weight_profit = [(1, 2), (2, 5), (4, 8), (2, 3)]
 
 capacity = 6
 
-result = unboundedKS(weight_profit, capacity)
-print(np.matrix(result))
+## BOUNDED test
+result2 = dynamicKS(weight_profit, capacity, boundedhelper)
+print(result2)
 
-count = unboundedtraceback(weight_profit, result)
+count2 = traceback(weight_profit, result2)
 for i in range(len(weight_profit)):
     #if the count is >0 the corresponging i item has been selected
-    if(count[i] > 0):
-        print("Item ", weight_profit[i], " count ", count[i])
+    if(count2[i] > 0):
+        print("Item ", weight_profit[i], " count ", count2[i])
+
+## UNBOUNDED test
+result2 = dynamicKS(weight_profit, capacity, unboundedhelper)
+print(result2)
+
+count2 = traceback(weight_profit, result2)
+for i in range(len(weight_profit)):
+    #if the count is >0 the corresponging i item has been selected
+    if(count2[i] > 0):
+        print("Item ", weight_profit[i], " count ", count2[i])
