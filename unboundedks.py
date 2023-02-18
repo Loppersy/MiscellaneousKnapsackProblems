@@ -109,9 +109,7 @@ def traceback(weight_profit, knapsack_arr):
     return count
 
 
-# ================================MAIN=============================
-
-
+# ================================MAIN===================================
 def main():
     outputFilePath = 'DynamicTable.txt'
     inputFilePath = requestInputFile()

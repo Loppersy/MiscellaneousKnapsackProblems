@@ -68,15 +68,8 @@ def getmaxsubset(root):
             solution_set = node.subset
             odd_weight = node.weight
 
+    # add 1 to the item indexes since they are 0-indexed and the input is 1-indexed
+    for i in range(len(solution_set)):
+        solution_set[i] += 1
     return max_even_profit, odd_weight, solution_set
 
-
-# weight_profit = [(2, 3), (3, 4), (4, 5)]
-#
-# capacity = 6
-#
-# tree_root = kstree(weight_profit, capacity)
-# print(at.RenderTree(tree_root))  # prints tree
-# max_profit, odd_weight, solution_set = getmaxsubset(tree_root)
-#
-# print("\n\nSOLUTION\nset ", solution_set, " with profit", max_profit, "and weight", odd_weight)
