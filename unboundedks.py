@@ -1,4 +1,6 @@
 import numpy as np
+import os.path
+from os import path
 
 """ 
 Following function solves the unbounded and unbounded knapsack problem using a bottom up dynanic
@@ -98,8 +100,38 @@ def traceback(weight_profit, knapsack_arr):
 '================================MAIN============================='
 #temp hardcodes
 weight_profit = [(1, 2), (2, 5), (4, 8), (2, 3)]
-
 capacity = 6
+
+inputFilePath = input('Please enter complete input file path :\n')
+# prompt for input path
+
+while (not path.is_file(inputFilePath)):
+    inputFilePath = input('Sorry file not found.\nPlease enter complete input file path :\n')
+        # tests path string and progresses when the user gives a file
+
+with open (inputFilePath, mode='r', encoding='utf-8') as In:
+    rawData = In.read()
+rawData = rawData.split("\n")
+    # store data as one long list split by line
+
+metaData = rawData.pop(0).split()
+    # collect meta data from line 1 and discard line 1 from data
+
+metaData.append(len(rawData))
+    # capacity is index 0, number of items is index 1
+
+temp = []
+data = []
+
+for x in rawData:
+    temp = x.split()
+    temp.pop(0)
+    data.append(' '.join(temp))
+        # store data as one long list with item index removed
+
+weight_profit = data
+capacity = metaData(0)
+
 
 ## BOUNDED test
 result2 = dynamicKS(weight_profit, capacity, boundedhelper)
