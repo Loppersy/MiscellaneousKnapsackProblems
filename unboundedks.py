@@ -98,18 +98,46 @@ def traceback(weight_profit, knapsack_arr):
     return count
 
 def getNextTest():
+    # method for allowing the user to select tests
+
     inputNumber = 0
     inputNumber = input('Please enter the test number to run on the data.\n 1:  Simple 0-1 Knapsack Problem\n 2: General Knapsack Problem\n 3: 0-1 Knapsack Problem with Constraints')
     while (inputFilePath != 1 or inputFilePath != 2 or inputFilePath != 3 or inputFilePath != 4):
         inputNumber = input('Sorry input not valid.\n 1:  Simple 0-1 Knapsack Problem\n 2: General Knapsack Problem\n 3: 0-1 Knapsack Problem with Constraints\n 4: All tests\n')
     return inputNumber
 
+def printResults(outputPath, testNumber, result, resultItems, dataArray):
+    # method for printing output to file
+
+    print('The results for the')
+
+    if(testNumber == 1):
+        print('Simple 0-1 Knapsack Problem ')
+    elif(testNumber == 2):
+        print('General Knapsack Problem ')
+    elif(testNumber == 3):
+        print('0-1 Knapsack Problem with Constraints ')
+
+    print('are:\n', 'Highest Value:', result, '\nItem List:', resultItems, '\n')
+
+
+        
+    with open (outFilePath, mode='a', encoding='utf-8') as out:
+        out.write(dataArray)
+        out.write('\n')
+        # write plain table to file
+        
+        
+        
+        
 '================================MAIN============================='
 #temp hardcodes
 weight_profit = [(1, 2), (2, 5), (4, 8), (2, 3)]
 capacity = 6
 outputFilePath = 'dynamicTable.txt'
     # Outputs to current working directory
+with open (outFilePath, mode='a', encoding='utf-8') as In:
+    pass
 
 inputFilePath = input('Please enter complete input file path :\n')
 # prompt for input path
