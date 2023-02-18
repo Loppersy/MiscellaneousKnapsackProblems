@@ -97,10 +97,19 @@ def traceback(weight_profit, knapsack_arr):
     
     return count
 
+def getNextTest():
+    inputNumber = 0
+    inputNumber = input('Please enter the test number to run on the data.\n 1:  Simple 0-1 Knapsack Problem\n 2: General Knapsack Problem\n 3: 0-1 Knapsack Problem with Constraints')
+    while (inputFilePath != 1 or inputFilePath != 2 or inputFilePath != 3 or inputFilePath != 4):
+        inputNumber = input('Sorry input not valid.\n 1:  Simple 0-1 Knapsack Problem\n 2: General Knapsack Problem\n 3: 0-1 Knapsack Problem with Constraints\n 4: All tests\n')
+    return inputNumber
+
 '================================MAIN============================='
 #temp hardcodes
 weight_profit = [(1, 2), (2, 5), (4, 8), (2, 3)]
 capacity = 6
+outputFilePath = 'dynamicTable.txt'
+    # Outputs to current working directory
 
 inputFilePath = input('Please enter complete input file path :\n')
 # prompt for input path
@@ -131,11 +140,15 @@ for x in rawData:
 
 weight_profit = data
 capacity = metaData(0)
+    # set variables
 
+nexTest = getNextTest()
+    # prompt user for next test
 
 ## BOUNDED test
 result2 = dynamicKS(weight_profit, capacity, boundedhelper)
 print(np.matrix(result2))
+
 
 count2 = traceback(weight_profit, result2)
 for i in range(len(weight_profit)):
